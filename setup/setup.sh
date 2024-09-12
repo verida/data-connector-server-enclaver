@@ -6,6 +6,8 @@ ulimit -n 65536
 ifconfig lo 127.0.0.1
 ifconfig
 
+ln -sf `which iptables-legacy` `which iptables`
+
 # adding a default route
 ip route add default via 127.0.0.1 dev lo
 route -n
@@ -18,7 +20,11 @@ iptables -L -t nat
 # generate identity key
 /app/keygen --secret /app/id.sec --public /app/id.pub
 
-cd /app/server && yarn &
+cd /app/data-connector-server && yarn &
+
+# opening port 1700
+# /app/vsock-to-ip --vsock-addr 88:1700 --ip-addr 127.0.0.1:1700 &
+# /app/secret_manager --ip-addr 127.0.0.1:1700 --private-key /app/id.sec --loader /app/keystore/key.pub --output /app/data-connector-server/src/serverconfig.local.json
 
 # starting supervisord
 cat /etc/supervisord.conf
