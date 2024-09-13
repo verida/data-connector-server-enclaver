@@ -1,12 +1,13 @@
 #!/bin/sh
 
+# Set up networking
 ulimit -n 65536
 
-# setting an address for loopback
+# Setting an address for loopback
 ifconfig lo 127.0.0.1
 ifconfig
 
-# adding a default route
+# Adding a default route
 ip route add default via 127.0.0.1 dev lo
 route -n
 
@@ -15,11 +16,21 @@ iptables -A OUTPUT -t nat -p tcp --dport 1:65535 ! -d 127.0.0.1  -j DNAT --to-de
 iptables -t nat -A POSTROUTING -o lo -s 0.0.0.0 -j SNAT --to-source 127.0.0.1
 iptables -L -t nat
 
-# generate identity key
+# Generate identity key
 /app/keygen --secret /app/id.sec --public /app/id.pub
 
-cd /app/server && yarn &
+# Set up Django environment
+export DJANGO_SETTINGS_MODULE=api.settings
 
-# starting supervisord
+# Navigate to the Django project directory
+cd /app/server
+
+# Apply database migrations
+python manage.py migrate
+
+# Collect static files
+python manage.py collectstatic --noinput
+
+# Start supervisord
 cat /etc/supervisord.conf
 /app/supervisord
