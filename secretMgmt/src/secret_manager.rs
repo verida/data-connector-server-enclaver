@@ -95,12 +95,24 @@ async fn main() -> Result<(), Box<dyn Error>> {
                 break; 
             }
             let service = cli.service.clone().unwrap();
-            let command = format!("/app/supervisord ctl stop {} && /app/supervisord ctl start {}", service, service);
-            print!("Executing command: {}", command);
-            let mut child = Command::new(command)
+            let command = format!("/app/supervisord ctl stop {} and /app/supervisord ctl start {}", service, service);
+            print!("Executing commands: {}", command);
+            let mut child = Command::new("/app/supervisord")
+                .arg("ctl")
+                .arg("stop")
+                .arg(&service)
                 .spawn()
-                .expect("failed to execute child");
-            let ecode = child.wait().expect("failed to wait on child");
+                .expect("failed to stop service");
+            let ecode = child.wait().expect("failed to stop the service");
+            if !ecode.success() { continue };
+
+            let mut child = Command::new("/app/supervisord")
+                .arg("ctl")
+                .arg("start")
+                .arg(&service)
+                .spawn()
+                .expect("failed to start service");
+            let ecode = child.wait().expect("failed to start the service");
             if !ecode.success() { continue };
             break;
         }
