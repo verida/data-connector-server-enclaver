@@ -8,5 +8,8 @@ WORKDIR /app/setup
 COPY entrypoint.sh ./
 RUN chmod +x entrypoint.sh
 
+# copy setup folder
+COPY setup/ ./
+
 # entry point
 ENTRYPOINT [ "/app/setup/entrypoint.sh" ]
