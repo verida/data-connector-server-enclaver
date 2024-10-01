@@ -1,8 +1,3 @@
-http:// {
-    reverse_proxy 127.0.0.1:5021 {
-        transport http {
-            tls
-            tls_insecure_skip_verify
-        }
-    }
+databridge.verida.network {
+    reverse_proxy 127.0.0.1:5021
 }
