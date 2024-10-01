@@ -7,7 +7,9 @@ ulimit -n 65536
 ifconfig lo 127.0.0.1
 ifconfig
 
-# Adding a default route
+ln -sf `which iptables-legacy` `which iptables`
+
+# adding a default route
 ip route add default via 127.0.0.1 dev lo
 route -n
 
@@ -19,8 +21,11 @@ iptables -L -t nat
 # Generate identity key
 /app/keygen --secret /app/id.sec --public /app/id.pub
 
-# Set up Django environment
-export DJANGO_SETTINGS_MODULE=api.settings
+cd /app/data-connector-server && yarn &
+
+# opening port 1700
+# /app/vsock-to-ip --vsock-addr 88:1700 --ip-addr 127.0.0.1:1700 &
+# /app/secret_manager --ip-addr 127.0.0.1:1700 --private-key /app/id.sec --loader /app/keystore/key.pub --output /app/data-connector-server/src/serverconfig.local.json
 
 # Navigate to the Django project directory
 cd /app/server
