@@ -27,15 +27,6 @@ cd /app/data-connector-server && yarn &
 # /app/vsock-to-ip --vsock-addr 88:1700 --ip-addr 127.0.0.1:1700 &
 # /app/secret_manager --ip-addr 127.0.0.1:1700 --private-key /app/id.sec --loader /app/keystore/key.pub --output /app/data-connector-server/src/serverconfig.local.json
 
-# Navigate to the Django project directory
-cd /app/server
-
-# Apply database migrations
-python manage.py migrate
-
-# Collect static files
-python manage.py collectstatic --noinput
-
 # Start supervisord
 cat /etc/supervisord.conf
 /app/supervisord
