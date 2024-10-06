@@ -63,15 +63,6 @@ RUN git clone -b release/alpha https://github.com/verida/data-connector-server.g
 COPY key.pub /app/keystore/key.pub
 COPY secret_manager /app/secret_manager
 
-# Telegram API requires glibc
-ENV GLIBC_VERSION=2.35-r1
-# Download and install the glibc package
-RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
-    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk && \
-    apk add --no-cache glibc-${GLIBC_VERSION}.apk && \
-    rm -f glibc-${GLIBC_VERSION}.apk
-# Clean up
-RUN rm -rf /var/cache/apk/* /tmp/*
 
 # copy from builders
 COPY --from=rust-builder --chown=10005:10005 /build/oyster-caddy-account-uri/signer/target/release/signer /app/acme-id
