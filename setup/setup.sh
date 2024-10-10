@@ -7,7 +7,7 @@ ulimit -n 65536
 ifconfig lo 127.0.0.1
 ifconfig
 
-ln -sf `which iptables-legacy` `which iptables`
+update-alternatives --set iptables /usr/sbin/iptables-legacy
 
 # adding a default route
 ip route add default via 127.0.0.1 dev lo
@@ -21,7 +21,8 @@ iptables -L -t nat
 # Generate identity key
 /app/keygen --secret /app/id.sec --public /app/id.pub
 
-cd /app/data-connector-server && yarn &
+sleep 3 && apt-get update && apt-get install -y git &
+sleep 5 && cd /app/data-connector-server && yarn &
 
 # opening port 1700
 # /app/vsock-to-ip --vsock-addr 88:1700 --ip-addr 127.0.0.1:1700 &

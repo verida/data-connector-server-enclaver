@@ -10,7 +10,7 @@ RUN git clone https://github.com/marlinprotocol/oyster-caddy-account-uri.git
 RUN cd oyster-caddy-account-uri/signer && cargo build --release
 
 # base image
-FROM ubuntu:22.04
+FROM node:22-slim
 
 # install dependency tools
 RUN apt-get update && apt-get install -y \
@@ -65,8 +65,7 @@ ENV XDG_DATA_HOME=/var/lib
 COPY Caddyfile /etc/caddy/Caddyfile
 
 # your custom setup goes here
-RUN apt-get install -y make gcc g++ npm nodejs yarn iptables python3
-RUN git clone -b release/alpha https://github.com/verida/data-connector-server.git
+RUN apt-get update -y && apt-get install -y git && git clone -b release/alpha https://github.com/verida/data-connector-server.git && apt-get remove -y git
 COPY key.pub /app/keystore/key.pub
 COPY secret_manager /app/secret_manager
 
