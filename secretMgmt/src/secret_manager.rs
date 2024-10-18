@@ -12,6 +12,7 @@ use tokio::io::AsyncWriteExt;
 use tokio::net::TcpListener;
 use x25519_dalek::x25519;
 use std::process::Command;
+use std::{thread, time::Duration};
 
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
@@ -81,13 +82,9 @@ async fn main() -> Result<(), Box<dyn Error>> {
                 },
             )
             .map_err(|e| "Decrypt failed: ".to_owned() + &e.to_string())?;
-        // TODO: write data to file
-        println!("Data: {:?}", data);
-        // if output file exists, continue
-        if std::fs::metadata(cli.output.as_str()).is_ok() {
-            wi.write_all(b"File location not available!").await?;
-            continue;
-        }
+
+        println!("Data received and decrypted");
+
         std::fs::write(cli.output.as_str(), data.clone()).expect("Unable to write file");
         if !data.is_empty() {
             wi.write_all(b"Data write suceeded!").await?;

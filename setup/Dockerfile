@@ -65,7 +65,7 @@ ENV XDG_DATA_HOME=/var/lib
 COPY Caddyfile /etc/caddy/Caddyfile
 
 # your custom setup goes here
-RUN apt-get update -y && apt-get install -y git && git clone -b release/alpha https://github.com/verida/data-connector-server.git && apt-get remove -y git
+RUN apt-get update -y && apt-get install -y python3 make g++ git && git clone -b release/alpha https://github.com/verida/data-connector-server.git && apt-get remove -y git
 COPY key.pub /app/keystore/key.pub
 COPY secret_manager /app/secret_manager
 

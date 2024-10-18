@@ -21,8 +21,7 @@ iptables -L -t nat
 # Generate identity key
 /app/keygen --secret /app/id.sec --public /app/id.pub
 
-sleep 3 && apt-get update && apt-get install -y git &
-sleep 5 && cd /app/data-connector-server && yarn &
+sleep 3 && apt-get update && apt-get install -y git lsof procps && cd /app/data-connector-server && yarn && yarn build &
 
 # opening port 1700
 # /app/vsock-to-ip --vsock-addr 88:1700 --ip-addr 127.0.0.1:1700 &
