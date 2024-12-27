@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # supervisord to manage programs
-RUN wget -O supervisord https://artifacts.marlin.org/oyster/binaries/supervisord_c2cae38b_linux_amd64 && \
+RUN wget -O supervisord https://artifacts.marlin.org/oyster/binaries/supervisord_c2cae38b_linux_arm64 && \
     chmod +x supervisord
 
 # transparent proxy component inside the enclave to enable outgoing connections
