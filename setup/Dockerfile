@@ -10,7 +10,7 @@ RUN git clone https://github.com/marlinprotocol/oyster-caddy-account-uri.git
 RUN cd oyster-caddy-account-uri/signer && cargo build --release
 
 # base image
-FROM node:22-slim
+FROM node:23-slim
 
 # install dependency tools
 RUN apt-get update && apt-get install -y \
